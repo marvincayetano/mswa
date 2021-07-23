@@ -2,7 +2,12 @@ module.exports = {
   purge: [],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+        backgroundImage: theme => ({
+            'cold': "url('/src/img/cold.svg')",
+            'hot': "url('/src/img/hot.svg')",
+           })
+    },
   },
   variants: {
     extend: {},
