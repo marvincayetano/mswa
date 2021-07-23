@@ -3,3 +3,8 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.eslintrc.js
+.prettier.js
+.eslintignore
+.prettierignore

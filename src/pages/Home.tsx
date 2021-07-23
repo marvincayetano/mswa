@@ -13,6 +13,7 @@ export enum ScaleEnum {
 }
 
 interface LocationInterface {
+  id: number;
   city: string;
   country: string;
 }
@@ -29,10 +30,9 @@ export default function Home({}: HomeProps) {
     queryData();
   }, [loc]);
 
+  const [cookies, setCookie] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
   const [scale, setScale] = useState(ScaleEnum.celsius);
-  const [cookies, setCookie] = useCookies([import.meta.env.VITE_COOKIES_IDS]);
 
-  console.log(cookies);
   const queryData = async () => {
     const response = await fetch(
       `https://api.openweathermap.org/data/2.5/weather?q=${loc.city},,${
@@ -139,9 +139,13 @@ export default function Home({}: HomeProps) {
               <button
                 className="text-transparent bg-clip-text bg-gradient-to-br from-green-700 to-gray-600 m-2 hover:text-blue-500 hover:font-semibold"
                 onClick={() => {
-                  setCookie(import.meta.env.VITE_COOKIES_IDS, [loc.id, ...cookies], {
-                    path: '/',
-                  });
+                  setCookie(
+                    `${import.meta.env.VITE_COOKIES_IDS}`,
+                    [loc.id, ...cookies.get(`${import.meta.env.VITE_COOKIES_IDS}`)],
+                    {
+                      path: '/',
+                    },
+                  );
                 }}>
                 Add to favourites
               </button>
