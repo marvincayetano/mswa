@@ -12,7 +12,7 @@ export default function App({}: AppProps) {
 
   return (
     <Router>
-      <div className="flex-col h-screen bg-blue-50 lg:pl-72 lg:pr-72">
+      <div className="flex-col h-screen bg-blue-50 px-0 lg:px-24">
         <Nav setIsModalOpen={setIsModalOpen} />
         <Switch>
           <Route path="/favourite">

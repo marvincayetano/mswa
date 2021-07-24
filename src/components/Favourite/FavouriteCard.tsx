@@ -22,7 +22,8 @@ export function FavouriteCard({
   const [cookies, setCookie] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
 
   return (
-    <div className={`flex justify-between w-1/2 h-28 p-2 pl-4 pr-4 mb-2 rounded ${bg}`}>
+    <div
+      className={`flex justify-between w-full md:w-1/2 h-28 p-2 pl-4 pr-4 mb-2 rounded ${bg}`}>
       <div className="flex-col text-white">
         <p className="font-semibold">{location}</p>
         <div className="flex items-center">

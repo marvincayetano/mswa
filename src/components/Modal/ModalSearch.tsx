@@ -37,14 +37,19 @@ export function ModalSearch({ setLoc, setIsModalOpen }: ModalSearchProps) {
   }, [input]);
 
   return (
-    <div
-      className="p-72 h-screen left-0 top-0 fixed w-screen flex flex-col bg-gray-200 bg-opacity-50"
-      onClick={() => {
-        setIsModalOpen(false);
-      }}>
+    <div className="py-72 md:p-72 h-screen left-0 top-0 fixed w-screen flex flex-col bg-gray-200 bg-opacity-50">
       <div className="mt-0 mb-0 ml-auto mr-auto w-96 bg-white opacity-100 h-full rounded">
+        <div className="flex justify-end px-5 pt-2">
+          <button
+            className="text-sm text-red-400"
+            onClick={() => {
+              setIsModalOpen(false);
+            }}>
+            close
+          </button>
+        </div>
         <NavSearch
-          className="p-5 ml-10 mr-10 border-b border-gray-200"
+          className="p-5 pt-0 ml-10 mr-10 border-b border-gray-200"
           fnInput={setInput}
         />
         <div className="flex-auto w-full h-3/4 p-6 pt-2 overflow-y-scroll">

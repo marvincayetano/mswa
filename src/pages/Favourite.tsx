@@ -46,7 +46,7 @@ export default function Favourite({}: FavouriteProps) {
   }
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center px-3 md:px-0">
       {data && data.length > 0 ? (
         /* Return value from api is unpredictable */
         data.map((loc: APIResultInterface, i: number) => (

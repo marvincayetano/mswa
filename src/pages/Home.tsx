@@ -20,11 +20,15 @@ export enum ScaleEnum {
 export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
   const [isFound, setIsFound] = useState(true);
   const [data, setData] = useState<any | null>(null);
-  const [loc, setLoc] = useState<LocationInterface>({
-    id: 6167865,
-    city: 'toronto',
-    country: 'CA',
-  });
+  const [cookies, setCookie] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
+
+  // Toronto is default. ey
+  const [loc, setLoc] = useState<LocationInterface>(
+    cookies.ids[0] || {
+      city: 'toronto',
+      country: 'CA',
+    },
+  );
   useEffect(() => {
     queryData(loc.city, loc.country).then((result) => {
       if (!result.err) {
@@ -38,7 +42,6 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
     setIsModalOpen(false);
   }, [loc]);
 
-  const [cookies, setCookie] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
   const [scale, setScale] = useState(ScaleEnum.celsius);
 
   const cookieExists = (city: string, country: string) => {
@@ -64,7 +67,7 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
           className={`${getBG(
             scale,
             data.temp,
-          )} rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full sm:w-10/12 m-0 sm:m-auto`}>
+          )} rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full`}>
           <div className="text-center text-white">
             {data.weather.length && (
               <div className="flex justify-center items-center">
