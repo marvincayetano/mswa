@@ -3,22 +3,21 @@ import ModalSearch from '../components/Modal';
 import cToF from '../helpers/cToF';
 import fToC from '../helpers/fToC';
 import getBG from '../helpers/getBG';
+import queryData from '../helpers/queryData';
+import LocationInterface from '../interfaces/LocationInterface';
 import { useCookies } from 'react-cookie';
 
-interface HomeProps {}
+interface HomeProps {
+  isModalOpen: boolean;
+  setIsModalOpen: Function;
+}
 
 export enum ScaleEnum {
   celsius = 'c',
   farenheit = 'f',
 }
 
-interface LocationInterface {
-  id: number;
-  city: string;
-  country: string;
-}
-
-export default function Home({}: HomeProps) {
+export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
   const [isFound, setIsFound] = useState(true);
   const [data, setData] = useState<any | null>(null);
   const [loc, setLoc] = useState<LocationInterface>({
@@ -27,49 +26,45 @@ export default function Home({}: HomeProps) {
     country: 'CA',
   });
   useEffect(() => {
-    queryData();
+    queryData(loc.city, loc.country).then((result) => {
+      if (!result.err) {
+        setData(result);
+        setIsFound(true);
+      } else {
+        console.error(result.err);
+      }
+    });
+
+    setIsModalOpen(false);
   }, [loc]);
 
   const [cookies, setCookie] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
   const [scale, setScale] = useState(ScaleEnum.celsius);
 
-  const queryData = async () => {
-    const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?q=${loc.city},,${
-        loc.country
-      }&appid=${import.meta.env.VITE_API_WEATHER}&units=metric`,
-    );
-
-    if (response.status === 200) {
-      const { main, weather, name, sys } = await response.json();
-      setData({
-        feelsLike: Math.round(main.feels_like),
-        humidity: main.humidity,
-        temp: Math.round(main.temp),
-        temp_min: Math.round(main.temp_min),
-        temp_max: Math.round(main.temp_max),
-        name,
-        country: sys.country,
-        weather,
-      });
-
-      console.log(data);
-    } else {
-      setData({ err: 'Something went wrong!' });
+  const cookieExists = (city: string, country: string) => {
+    console.log;
+    if (cookies) {
+      if (cookies.ids) {
+        return (
+          cookies.ids.filter((i: any) => i.city === loc.city && i.country === loc.country)
+            .length > 0
+        );
+      }
     }
 
-    setIsFound(true);
+    return false;
   };
 
   return (
     <>
-      {!isFound && <ModalSearch setLoc={setLoc} />}
+      {!isFound ||
+        (isModalOpen && <ModalSearch setLoc={setLoc} setIsModalOpen={setIsModalOpen} />)}
       {data && (
         <div
           className={`${getBG(
             scale,
             data.temp,
-          )} bg-cold rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat`}>
+          )} rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full sm:w-10/12 m-0 sm:m-auto`}>
           <div className="text-center text-white">
             {data.weather.length && (
               <div className="flex justify-center items-center">
@@ -135,21 +130,26 @@ export default function Home({}: HomeProps) {
               </div>
             </div>
             <div className="pt-6">
-              {/* {!cookies.includes(loc.id) && ( */}
-              <button
-                className="text-transparent bg-clip-text bg-gradient-to-br from-green-700 to-gray-600 m-2 hover:text-blue-500 hover:font-semibold"
-                onClick={() => {
-                  setCookie(
-                    `${import.meta.env.VITE_COOKIES_IDS}`,
-                    [loc.id, ...cookies.get(`${import.meta.env.VITE_COOKIES_IDS}`)],
-                    {
-                      path: '/',
-                    },
-                  );
-                }}>
-                Add to favourites
-              </button>
-              {/* )} */}
+              {/* If data is in the cookies already then dont show this button */}
+              {!cookieExists(loc.city, loc.country) ? (
+                <button
+                  className="text-transparent bg-clip-text bg-gradient-to-br from-green-700 to-gray-600 m-2 hover:text-blue-500 hover:font-semibold"
+                  onClick={() => {
+                    setCookie(
+                      `${import.meta.env.VITE_COOKIES_IDS}`,
+                      cookies.ids
+                        ? [{ city: loc.city, country: loc.country }, ...cookies.ids]
+                        : [{ city: loc.city, country: loc.country }],
+                      {
+                        path: '/',
+                      },
+                    );
+                  }}>
+                  Add to favourites
+                </button>
+              ) : (
+                <p className="font-medium font-sm">Already added to the list!</p>
+              )}
             </div>
           </div>
         </div>

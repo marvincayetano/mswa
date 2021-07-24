@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 import Nav from './components/Nav';
@@ -8,17 +8,18 @@ import Favourite from './pages/Favourite';
 interface AppProps {}
 
 export default function App({}: AppProps) {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   return (
     <Router>
-      <div className="h-screen bg-blue-50 pl-72 pr-72">
-        <Nav />
-
+      <div className="flex-col h-screen bg-blue-50 lg:pl-72 lg:pr-72">
+        <Nav setIsModalOpen={setIsModalOpen} />
         <Switch>
           <Route path="/favourite">
             <Favourite />
           </Route>
           <Route path="/">
-            <Home />
+            <Home isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
           </Route>
         </Switch>
       </div>

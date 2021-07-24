@@ -1,14 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface NavSearchProps {
   className?: string;
   fnInput?: Function;
+  setIsModalOpen?: Function;
+  isEnabled?: boolean;
 }
 
-export function NavSearch({ className, fnInput }: NavSearchProps) {
+export function NavSearch({
+  className,
+  fnInput,
+  setIsModalOpen,
+  isEnabled = fnInput !== null,
+}: NavSearchProps) {
   // This is for how long before search starts
   const [input, setInput] = useState('');
   const DONE_TYPING_INTERVAL = 1500;
+  const inputElement = useRef<null | any>(null);
+  useEffect(() => {
+    if (inputElement && inputElement.current) inputElement!.current.focus();
+  });
 
   function finishTyping() {
     if (fnInput) {
@@ -40,6 +51,10 @@ export function NavSearch({ className, fnInput }: NavSearchProps) {
         className="w-full py-2 text-sm bg-white rounded-md pl-10 focus:outline-none text-gray-900"
         placeholder="Search..."
         autoComplete="off"
+        ref={inputElement}
+        onClick={() => {
+          if (setIsModalOpen) setIsModalOpen(true);
+        }}
         onFocus={(e) => e.target.select()}
         onChange={(e) => {
           setInput(e.target.value);
