@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import ModalSearch from '../components/Modal';
-import cToF from '../helpers/cToF';
-import fToC from '../helpers/fToC';
-import getBG from '../helpers/getBG';
-import queryData from '../helpers/queryData';
-import LocationInterface from '../interfaces/LocationInterface';
-import { useCookies } from 'react-cookie';
+import React, { useEffect, useState } from "react";
+import ModalSearch from "../components/Modal";
+import cToF from "../helpers/cToF";
+import fToC from "../helpers/fToC";
+import getBG from "../helpers/getBG";
+import queryData from "../helpers/queryData";
+import LocationInterface from "../interfaces/LocationInterface";
+import { useCookies } from "react-cookie";
 
 interface HomeProps {
   isModalOpen: boolean;
@@ -13,22 +13,30 @@ interface HomeProps {
 }
 
 export enum ScaleEnum {
-  celsius = 'c',
-  farenheit = 'f',
+  celsius = "c",
+  farenheit = "f",
 }
 
 export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
   const [isFound, setIsFound] = useState(true);
   const [data, setData] = useState<any | null>(null);
-  const [cookies, setCookie] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
+  const [cookies, setCookie] = useCookies([
+    `${process.env.NEXT_PUBLIC_COOKIES_IDS}`,
+  ]);
 
-  // Toronto is default. ey
-  const [loc, setLoc] = useState<LocationInterface>(
-    cookies.ids[0] || {
-      city: 'toronto',
-      country: 'CA',
-    },
-  );
+  function getFirstCookie() {
+    if (cookies.ids) {
+      if (cookies.ids[0]) return cookies.ids[0];
+    }
+
+    // Toronto is default. ey
+    return {
+      city: "toronto",
+      country: "CA",
+    };
+  }
+
+  const [loc, setLoc] = useState<LocationInterface>(getFirstCookie());
   useEffect(() => {
     queryData(loc.city, loc.country).then((result) => {
       if (!result.err) {
@@ -49,8 +57,9 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
     if (cookies) {
       if (cookies.ids) {
         return (
-          cookies.ids.filter((i: any) => i.city === loc.city && i.country === loc.country)
-            .length > 0
+          cookies.ids.filter(
+            (i: any) => i.city === loc.city && i.country === loc.country
+          ).length > 0
         );
       }
     }
@@ -61,17 +70,22 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
   return (
     <>
       {!isFound ||
-        (isModalOpen && <ModalSearch setLoc={setLoc} setIsModalOpen={setIsModalOpen} />)}
+        (isModalOpen && (
+          <ModalSearch setLoc={setLoc} setIsModalOpen={setIsModalOpen} />
+        ))}
       {data && (
         <div
           className={`${getBG(
             scale,
-            data.temp,
-          )} rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full`}>
+            data.temp
+          )} rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full`}
+        >
           <div className="text-center text-white">
             {data.weather.length && (
               <div className="flex justify-center items-center">
-                <p className="text-2xl font-semibold">{data.weather[0].description}</p>
+                <p className="text-2xl font-semibold">
+                  {data.weather[0].description}
+                </p>
                 <img
                   src={`http://openweathermap.org/img/wn/${data.weather[0].icon}.png`}
                   alt=""
@@ -83,7 +97,9 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
               <p className="text-5xl font-extrabold">
                 {data.temp}°{scale}
               </p>
-              <p className="text-lg pb-5 font-medium">Feels like {data.feelsLike}°</p>
+              <p className="text-lg pb-5 font-medium">
+                Feels like {data.feelsLike}°
+              </p>
               <div className="flex-col font-bold">
                 <p>
                   min: <span>{data.temp_min}°</span>
@@ -110,7 +126,8 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
 
                       setScale(ScaleEnum.celsius);
                     }
-                  }}>
+                  }}
+                >
                   C°
                 </button>
                 <button
@@ -127,7 +144,8 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
 
                       setScale(ScaleEnum.farenheit);
                     }
-                  }}>
+                  }}
+                >
                   F°
                 </button>
               </div>
@@ -139,19 +157,25 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
                   className="text-transparent bg-clip-text bg-gradient-to-br from-green-700 to-gray-600 m-2 hover:text-blue-500 hover:font-semibold"
                   onClick={() => {
                     setCookie(
-                      `${import.meta.env.VITE_COOKIES_IDS}`,
+                      `${process.env.NEXT_PUBLIC_COOKIES_IDS}`,
                       cookies.ids
-                        ? [{ city: loc.city, country: loc.country }, ...cookies.ids]
+                        ? [
+                            { city: loc.city, country: loc.country },
+                            ...cookies.ids,
+                          ]
                         : [{ city: loc.city, country: loc.country }],
                       {
-                        path: '/',
-                      },
+                        path: "/",
+                      }
                     );
-                  }}>
+                  }}
+                >
                   Add to favourites
                 </button>
               ) : (
-                <p className="font-medium font-sm">Already added to the list!</p>
+                <p className="font-medium font-sm">
+                  Already added to the list!
+                </p>
               )}
             </div>
           </div>

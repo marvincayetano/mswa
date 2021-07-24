@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useCookies } from 'react-cookie';
-import FavouriteCard from '../components/Favourite';
-import queryData from '../helpers/queryData';
-import LocationInterface from '../interfaces/LocationInterface';
-import APIResultInterface from '../interfaces/APIResultInterface';
-import getBG from '../helpers/getBG';
-import { ScaleEnum } from '../pages/Home';
+import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
+import FavouriteCard from "../components/Favourite";
+import queryData from "../helpers/queryData";
+import LocationInterface from "../interfaces/LocationInterface";
+import APIResultInterface from "../interfaces/APIResultInterface";
+import getBG from "../helpers/getBG";
+import { ScaleEnum } from "../pages/index";
 
 interface FavouriteProps {}
 
 export default function Favourite({}: FavouriteProps) {
-  const [cookies] = useCookies([`${import.meta.env.VITE_COOKIES_IDS}`]);
+  const [cookies] = useCookies([`${process.env.NEXT_PUBLIC_COOKIES_IDS}`]);
   const [data, setData] = useState<APIResultInterface | any>([]);
 
   // Unpredictable API Result
@@ -41,7 +41,7 @@ export default function Favourite({}: FavouriteProps) {
         if (`${i.name}, ${i.country}`.toLowerCase() !== location) {
           return true;
         }
-      }),
+      })
     );
   }
 

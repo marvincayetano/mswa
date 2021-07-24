@@ -1,8 +1,6 @@
 const queryData = async (city: string, country: string) => {
   const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city},,${country}&appid=${
-      import.meta.env.VITE_API_WEATHER
-    }&units=metric`,
+    `https://api.openweathermap.org/data/2.5/weather?q=${city},,${country}&appid=${process.env.NEXT_PUBLIC_API_WEATHER}&units=metric`
   );
 
   if (response.status === 200) {
@@ -19,7 +17,7 @@ const queryData = async (city: string, country: string) => {
       weather,
     };
   } else {
-    return { err: 'Something went wrong!' };
+    return { err: "Something went wrong!" };
   }
 };
 

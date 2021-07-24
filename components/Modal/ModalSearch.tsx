@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { NavSearch } from '../Nav/NavSearch';
-import { ModalSearchCard } from './ModalSearchCard';
-import cities from '../../utils/cities';
+import React, { useEffect, useState } from "react";
+import { NavSearch } from "../Nav/NavSearch";
+import { ModalSearchCard } from "./ModalSearchCard";
+import cities from "../../utils/cities";
 
 interface ModalSearchProps {
   setLoc: Function;
@@ -17,22 +17,22 @@ interface CityInterface {
 }
 
 export function ModalSearch({ setLoc, setIsModalOpen }: ModalSearchProps) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [currentList, setCurrentList] = useState<CityInterface[] | []>([]);
   useEffect(() => {
     // Search here
-    if (input !== '') {
+    if (input !== "") {
       setCurrentList(
         cities.filter((city) => {
           if (city.name.toLowerCase().includes(input)) {
             return city;
           }
-        }),
+        })
       );
     }
 
     return () => {
-      setInput('');
+      setInput("");
     };
   }, [input]);
 
@@ -44,7 +44,8 @@ export function ModalSearch({ setLoc, setIsModalOpen }: ModalSearchProps) {
             className="text-sm text-red-400"
             onClick={() => {
               setIsModalOpen(false);
-            }}>
+            }}
+          >
             close
           </button>
         </div>

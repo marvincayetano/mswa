@@ -1,5 +1,5 @@
 export default interface LocationInterface {
-  id: number;
+  id?: number;
   city: string;
   country: string;
 }
