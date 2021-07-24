@@ -19,9 +19,7 @@ export function FavouriteCard({
   weather,
   removeData,
 }: FavouriteCardProps) {
-  const [cookies, setCookie] = useCookies([
-    `${process.env.NEXT_PUBLIC_COOKIES_IDS}`,
-  ]);
+  const [cookies, setCookie] = useCookies(["ids"]);
 
   return (
     <div
@@ -51,7 +49,7 @@ export function FavouriteCard({
             });
 
             removeData(location.toLowerCase());
-            setCookie(`${process.env.NEXT_PUBLIC_COOKIES_IDS}`, ids, {
+            setCookie("ids", ids, {
               path: "/",
             });
           }}

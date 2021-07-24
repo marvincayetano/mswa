@@ -10,7 +10,7 @@ import { ScaleEnum } from "../pages/index";
 interface FavouriteProps {}
 
 export default function Favourite({}: FavouriteProps) {
-  const [cookies] = useCookies([`${process.env.NEXT_PUBLIC_COOKIES_IDS}`]);
+  const [cookies] = useCookies(["ids"]);
   const [data, setData] = useState<APIResultInterface | any>([]);
 
   // Unpredictable API Result

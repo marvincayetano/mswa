@@ -20,9 +20,7 @@ export enum ScaleEnum {
 export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
   const [isFound, setIsFound] = useState(true);
   const [data, setData] = useState<any | null>(null);
-  const [cookies, setCookie] = useCookies([
-    `${process.env.NEXT_PUBLIC_COOKIES_IDS}`,
-  ]);
+  const [cookies, setCookie] = useCookies(["ids"]);
 
   function getFirstCookie() {
     if (cookies.ids) {
@@ -157,7 +155,7 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
                   className="text-transparent bg-clip-text bg-gradient-to-br from-green-700 to-gray-600 m-2 hover:text-blue-500 hover:font-semibold"
                   onClick={() => {
                     setCookie(
-                      `${process.env.NEXT_PUBLIC_COOKIES_IDS}`,
+                      "ids",
                       cookies.ids
                         ? [
                             { city: loc.city, country: loc.country },
