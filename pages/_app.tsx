@@ -1,4 +1,4 @@
-import "../styles/globals.css";
+import "tailwindcss/tailwind.css";
 import Nav from "../components/Nav";
 import { useState } from "react";
 
