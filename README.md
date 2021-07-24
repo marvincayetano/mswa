@@ -4,6 +4,11 @@
 
 ---
 
+# Simple features
+
+- Background changes depending on the temperature
+- Dynamic Icons of the weather
+
 # How does this work locally?
 
 - **npm/yarn install** - Install the dependencies
