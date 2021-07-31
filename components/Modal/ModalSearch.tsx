@@ -37,8 +37,8 @@ export function ModalSearch({ setLoc, setIsModalOpen }: ModalSearchProps) {
   }, [input]);
 
   return (
-    <div className="py-72 md:p-72 h-screen left-0 top-0 fixed w-screen flex flex-col bg-gray-200 bg-opacity-50">
-      <div className="mt-0 mb-0 ml-auto mr-auto w-96 bg-white opacity-100 h-full rounded">
+    <div className="py-16 md:py-72 md:p-72 h-screen left-0 top-0 fixed w-screen flex flex-col bg-gray-200 bg-opacity-50">
+      <div className="mt-0 mb-0 ml-auto mr-auto w-72 md:w-96 bg-white opacity-100 h-full rounded">
         <div className="flex justify-end px-5 pt-2">
           <button
             className="text-sm text-red-400"

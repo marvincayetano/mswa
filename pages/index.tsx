@@ -76,7 +76,7 @@ export default function Home({ isModalOpen, setIsModalOpen }: HomeProps) {
           className={`${getBG(
             scale,
             data.temp
-          )} rounded h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full`}
+          )} rounded h-3/4 md:h-1/2 flex items-center justify-center bg-center bg-no-repeat w-full`}
         >
           <div className="text-center text-white">
             {data.weather.length && (
